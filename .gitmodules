@@ -19,3 +19,9 @@
 [submodule "fixtures/vscode-pets"]
 	path = fixtures/vscode-pets
 	url = https://github.com/tonybaloney/vscode-pets.git
+[submodule "fixtures/vscode-material-icon-theme"]
+	path = fixtures/vscode-material-icon-theme
+	url = https://github.com/material-extensions/vscode-material-icon-theme.git
+[submodule "fixtures/vscode-java-dependency"]
+	path = fixtures/vscode-java-dependency
+	url = https://github.com/microsoft/vscode-java-dependency

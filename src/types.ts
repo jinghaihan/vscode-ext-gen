@@ -25,9 +25,8 @@ export interface GenerateOptions {
   extensionScope?: string
   /**
    * The locale to read from nls file
-   * @default 'en'
    */
-  locale?: string
+  locale?: string | true
 }
 
 export interface GenerateResult {
@@ -57,7 +56,15 @@ export interface Manifest {
     chatParticipants?: ChatParticipant[]
     commands?: Command[]
     configuration?: Configuration | Configuration[]
+    taskDefinitions?: TaskDefinition[]
   }
+}
+
+export interface TaskDefinition {
+  type?: string
+  properties?: Record<string, Property>
+  when?: string
+  required?: string[]
 }
 
 export interface Language {

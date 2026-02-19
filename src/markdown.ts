@@ -1,4 +1,4 @@
-import type { ChatParticipant, ConfigTable, Configuration, CustomEditor, Grammar, Language, Manifest, Property, Snippet } from './types'
+import type { ChatParticipant, ConfigTable, Configuration, CustomEditor, Grammar, Language, Manifest, Property, Snippet, TaskDefinition } from './types'
 import { defaultValFromSchema, extractConfigObject, getConfigArray } from './schema'
 import { formatConfigList, formatConfigTable, formatList, formatTable, markdownEscape } from './utils'
 
@@ -19,6 +19,10 @@ export function generateMarkdown(packageJson: Manifest) {
 
   let chatParticipantsTable = [
     ['Chat Participant', 'FullName', 'Description', 'Commands'],
+  ]
+
+  let taskDefinitionsTable = [
+    ['Task Definition', 'Type', 'Properties', 'When', 'Required'],
   ]
 
   if (packageJson.contributes?.commands?.length) {
@@ -102,12 +106,32 @@ export function generateMarkdown(packageJson: Manifest) {
     chatParticipantsTable = []
   }
 
+  if (packageJson.contributes?.taskDefinitions?.length) {
+    taskDefinitionsTable.push(
+      ...packageJson.contributes.taskDefinitions.map((t: TaskDefinition) => {
+        const props = t.properties ? Object.keys(t.properties).join(', ') : '-'
+        const required = t.required?.length ? t.required.join(', ') : '-'
+        return [
+          t.type ? `\`${t.type}\`` : '-',
+          t.type ?? '-',
+          props,
+          t.when ?? '-',
+          required,
+        ]
+      }),
+    )
+  }
+  else {
+    taskDefinitionsTable = []
+  }
+
   return {
     commandsTable: formatTable(commandsTable),
     configsTable: formatConfigTable(configsTables),
     languagesTable: formatTable(languagesTable),
     customEditorsTable: formatTable(customEditorsTable),
     chatParticipantsTable: formatTable(chatParticipantsTable),
+    taskDefinitionsTable: formatTable(taskDefinitionsTable),
     commandsList: formatList(commandsTable),
     configsList: formatConfigList(configsTables),
     languagesList: formatList(languagesTable),
